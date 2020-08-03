@@ -17,4 +17,6 @@ Sefaria clone with Stack Exchange-like features
 #### The work will be split into three parts:
 1. **The front-end application** - creating a website with a Sefaria-like UI/UX, plus a sidepane which will display all comments/questions and such. The data from Sefaria and from our comments database will eventually be served up by our API, but for now the UI can be developed with dummy values for simulation.
 1. **The Sefaria API** - working on "plugging in" the text from Sefaria into our web UI.
-1. **The comments API** - working on storing the comments for specific texts and serving them to the web UI, using an API.
+1. **The comments API** - working on storing the comments for specific texts and serving them to the web UI, using an API.    
+## What it should (sort of) look like at the end
+![image](public/images/sefaria_concept1.png)
