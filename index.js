@@ -1,10 +1,15 @@
 const express = require("express");
 const v1ApiRouter = require("./api/v1");
 
+const proxy = require("express-http-proxy");
+
 const app = express();
-const port = 3000;
+const port = 80;
 
 app.use(express.static('public'));
+app.use(express.static(__dirname + '/node_modules'));
+
+app.use("/se-proxy", proxy("https://api.stackexchange.com"));
 
 app.use("/api/v1", v1ApiRouter);
 

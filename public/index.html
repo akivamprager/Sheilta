@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
+        <script type='text/javascript' src='axios/dist/axios.min.js'></script>
+        <script src="./js/mytest.js"></script>
+        <script type='text/javascript'>
+            var stackAuth = null;
+            function onload() {
+                SE.init({ 
+                    // Parameters obtained by registering an app, these are specific to the SE
+                    //   documentation site
+                    clientId: 18448, 
+                    key: 'RtEIpalOqSR5*IkvKj8nOQ((', 
+                    // Used for cross domain communication, it will be validated
+                    channelUrl: location.protocol + "//" + location.host + "/html/blank.html",
+                    // Called when all initialization is finished
+                    complete: function(data) { 
+                        console.log("initialized");
+                    }
+                });
+            }
+            function login() {
+            
+                // Make the authentication call, note that being in an onclick handler
+                //   is important; most browsers will hide windows opened without a
+                //   'click blessing'
+                SE.authenticate({
+                    scope: ["write_access"],
+                    success: function(data) {
+                        stackAuth = data;
+                    },
+                    error: function(data) { 
+                        alert('An error occurred:\n' + data.errorName + '\n' + data.errorMessage); 
+                    },
+                    networkUsers: true
+                });
+            }
+
+        </script>
+    </head>
+    <body onload="onload()">
+        <input type="text" id="url" value="http://www.sefaria.org/api/texts/Kohelet.5">
+        <button onClick="login()">Click here</button>
+        <button onClick="createPost()">Post here</button>
+        <h3 id="title"></h3>  
+        <qoute id="text"></quote>  
+    </body>
+</html>

@@ -4,7 +4,8 @@ const axios = require("axios");
 
 router.get("/:book/:chapter", async (req, res) => {
     const params = req.params;
-    const sefariaRes = await axios.get("http://www.sefaria.org/api/texts/Kohelet.5");
+    let reqUrl = `https://sefaria.org/api/texts/${`${req.params.book}`}.${`${req.params.chapter}`}`;
+    const sefariaRes = await axios.get(reqUrl);
     res.json(sefariaRes.data);
 });
 
