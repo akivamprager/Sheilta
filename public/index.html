@@ -1,48 +1,56 @@
 <html>
-    <head>
-        <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
-        <script type='text/javascript' src='axios/dist/axios.min.js'></script>
-        <script src="./js/mytest.js"></script>
-        <script type='text/javascript'>
-            var stackAuth = null;
-            function onload() {
-                SE.init({ 
-                    // Parameters obtained by registering an app, these are specific to the SE
-                    //   documentation site
-                    clientId: 18448, 
-                    key: 'RtEIpalOqSR5*IkvKj8nOQ((', 
-                    // Used for cross domain communication, it will be validated
-                    channelUrl: location.protocol + "//" + location.host + "/html/blank.html",
-                    // Called when all initialization is finished
-                    complete: function(data) { 
-                        console.log("initialized");
-                    }
-                });
-            }
-            function login() {
-            
-                // Make the authentication call, note that being in an onclick handler
-                //   is important; most browsers will hide windows opened without a
-                //   'click blessing'
-                SE.authenticate({
-                    scope: ["write_access"],
-                    success: function(data) {
-                        stackAuth = data;
-                    },
-                    error: function(data) { 
-                        alert('An error occurred:\n' + data.errorName + '\n' + data.errorMessage); 
-                    },
-                    networkUsers: true
-                });
-            }
 
-        </script>
-    </head>
-    <body onload="onload()">
-        <input type="text" id="url" value="http://www.sefaria.org/api/texts/Kohelet.5">
-        <button onClick="login()">Click here</button>
-        <button onClick="createPost()">Post here</button>
-        <h3 id="title"></h3>  
-        <qoute id="text"></quote>  
-    </body>
+<head>
+    <script type='text/javascript' src='axios/dist/axios.min.js'></script>
+    <script src="./js/get-ext.js"></script>
+
+</head>
+
+<body onload="onPageLoad()">
+    <h2>Sefaria Text</h2>
+    <div id="sefaria" dir="rtl"></div>
+    <hr>
+    <h2>Questions</h2>
+    <div id="discourseQuestions"></div>
+    <hr>
+    <h2>Kashyas</h2>
+    <div id="discourseKashyas"></div>
+    <hr>
+    <h2>Chiddushim</h2>
+    <div id="discourseChiddushim"></div>
+    <hr>
+    <h2>References</h2>
+    <div id="discourseReferences"></div>
+
+    <script>
+        async function onPageLoad() {
+          const textId = new URLSearchParams(location.search).get("location");
+          populateText(document.getElementById("sefaria"), await getText(textId));
+          document.getElementById("discourseQuestions").innerHTML = await getTopics(textId, "questions");
+          document.getElementById("discourseKashyas").innerHTML = await getTopics(textId, "kashyas");
+          document.getElementById("discourseChiddushim").innerHTML = await getTopics(textId, "chiddushim");
+          document.getElementById("discourseReferences").innerHTML = await getTopics(textId, "references");
+        }
+
+        function populateText(container, textResponse) {
+          // clear container
+          const hebrewLines = textResponse.he;
+          hebrewLines.forEach(line => {
+            container.appendChild(createTextLine(line));
+          });
+        }
+
+        function createTextLine(line) {
+          const lineElem = document.createElement("div");
+          lineElem.appendChild(document.createTextNode(line));
+          const textElem = document.createElement("div");
+          const commentControl = document.createElement("button");
+          lineElem.appendChild(textElem);
+          lineElem.appendChild(commentControl);
+          return lineElem;
+        }
+    </script>
+
+</body>
+
 </html>

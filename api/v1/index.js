@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const textsController = require("./texts-controller");
-const commentsController = require("./comments-controller");
+const topicsController = require("./topics-controller");
+const categoriesController = require("./categories-controller");
 
 router.use("/texts", textsController);
-router.use("/comments", commentsController);
+router.use("/topics", topicsController);
+router.use("/categories", categoriesController);
 
 module.exports = router;

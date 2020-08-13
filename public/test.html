@@ -1,0 +1,29 @@
+<head>
+    <script type='text/javascript' src='axios/dist/axios.min.js'></script>
+    <script src="./js/comment-resource.js"></script>
+</head>
+
+<body>
+
+    <select id="category">
+        <option disabled selected>Category</option>
+        <option value="6">Kashyas</option>
+        <option value="5">Questions</option>
+        <option value="7">Refrences</option>
+        <option value="8">Chiddushim</option>
+    </select>
+    <input type="text" id="title" placeholder="title" />
+    <input type="text" id="topicText" placeholder="body" />
+    <input type="text" id="context" placeholder="context" />
+    <button
+        onclick="createNewTopic(document.getElementById('category').value, document.getElementById('title').value, document.getElementById('topicText').value, document.getElementById('context').value)">New
+        Topic</button>
+    <br>
+    <br>
+    <input type="number" id="topicId" placeholder="topic ID" />
+    <input type="text" id="commentText" placeholder="body" />
+    <button
+        onclick="createComment(document.getElementById('topicId').value, document.getElementById('commentText').value)">New
+        Comment</button>
+
+</body>
