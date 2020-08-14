@@ -14,7 +14,7 @@ class TextViewer extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({ textInfo: await getText(this.props.textId), questionInfo: await getTopics(this.props.textId) });
+        this.setState({ textInfo: await getText(this.props.textId), questionInfo: await getTopics(this.props.textId, "questions") });
     }
 
     onNewComment(lineNum) {
@@ -38,9 +38,15 @@ class TextViewer extends React.Component {
                 <h2>Questions</h2>
                 <div id="questions">
                     {
-                        this.state.questionInfo.topics.map((line, index) => (
-                            <TextLine key={index} line={line} topicId={index} onNewReply={this.onNewReply} />
-                        ))
+                        this.state.questionInfo.topics.forEach(topic => {
+                            const title = topic.title;
+                            topic.post_stream.posts.forEach(post => {
+                                <TextLine key={post.post_number} line={post.cooked} topicId={post.topicId} onNewReply={this.onNewReply} />
+                            });
+                        })
+                        //this.state.questionInfo.topics.map((line, index) => (
+                        //   <TextLine key={index} line={line} topicId={index} onNewReply={this.onNewReply} />
+                        //))
                     }
                 </div>
                 <h2>Kashyas</h2>

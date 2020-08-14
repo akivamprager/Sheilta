@@ -1,3 +1,4 @@
+// all of the functions for POSTing to Discourse
 async function createNewTopic(category, topicTitle, text, context) {
     const tag = new URLSearchParams(location.search).get("location").replace(/[.]/g, "-") + "-" + context;
     const topic = {

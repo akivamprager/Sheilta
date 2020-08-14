@@ -1,10 +1,10 @@
+// Dont touch this file...
 const express = require("express");
 const v1ApiRouter = require("./api/v1");
 const bodyParser = require("body-parser");
-const proxy = require("express-http-proxy");
 
 const app = express();
-const port = 80;
+const port = 3000;
 
 app.use(express.static('public'));
 app.use(express.static(__dirname + '/node_modules'));

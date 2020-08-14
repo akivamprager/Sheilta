@@ -1,4 +1,5 @@
 
+//file can be ignored
 async function viewText() {
     const textSection = document.getElementById("text");
     textSection.innerHTML = "";
