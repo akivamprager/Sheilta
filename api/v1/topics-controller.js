@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const secrets = require("../../secrets.json");
 
 function createCommonHeaders() {
     return {
         "Content-Type": "application/json",
-        "Api-Key": "ca68a9c8302248472e8963ff371b613a7c614cbdd8b3af8e8a5ce5f8a468dfea",
+        "Api-Key": secrets.discourse_global_key,
         "Api-Username": "system",
         "Accept": "application/json"
     };
