@@ -8,7 +8,7 @@ class TextLine extends React.Component {
     }
 
     onClick() {
-        this.props.onNewComment(this.props.lineNum);
+        this.props.onNewTopic(this.props.lineNum);
     }
 
     render() {

@@ -11,7 +11,7 @@ class TextViewer extends React.Component {
             referenceInfo: [],
             sections: {}
         };
-        this.onNewComment = this.onNewComment.bind(this);
+        this.onNewTopic = this.onNewTopic.bind(this);
         this.onNewReply = this.onNewReply.bind(this);
         this.toggleTopic = this.toggleTopic.bind(this);
     }
@@ -24,7 +24,10 @@ class TextViewer extends React.Component {
         });
     }
 
-    onNewComment(lineNum) {
+    onNewTopic(lineNum) {
+        createNewTopic(category)
+    }
+    onSubmitTopic(lineNum) {
         alert("new " + lineNum);
     }
 
@@ -48,16 +51,18 @@ class TextViewer extends React.Component {
         if (!this.isOpen(topic)) {
             textClasses.push("hidden");
         }
-        return (<div key={topic.id} className="topic-container" onClick={this.toggleTopic.bind(this, topic)}>
-            <span className="topic-title">{topic.title}</span>
-            <div className={textClasses.join(" ")}>
-                {
-                    topic.post_stream.posts.map(post => (
-                        <Post key={post.id} body={post.cooked} topicId={post.topic_id} onNewReply={this.onNewReply} />
-                    ))
-                }
+        return (
+            <div key={topic.id} className="topic-container" onClick={this.toggleTopic.bind(this, topic)}>
+                <span className="topic-title">{topic.title}</span>
+                <div className={textClasses.join(" ")}>
+                    {
+                        topic.post_stream.posts.map(post => (
+                            <Post key={post.id} body={post.cooked} topicId={post.topic_id} onNewReply={this.onNewReply} />
+                        ))
+                    }
+                </div>
             </div>
-        </div>);
+        );
     }
 
     render() {
@@ -67,19 +72,25 @@ class TextViewer extends React.Component {
                 <div id="texts" dir="rtl">
                     {this.state.textInfo &&
                         this.state.textInfo.he.map((line, index) => (
-                            <TextLine key={index} line={line} lineNum={index} onNewComment={this.onNewComment} />
+                            <TextLine key={index} line={line} lineNum={index} onNewTopic={this.onNewTopic} />
                         ))
                     }
                 </div>
-                <div id="new-comment">
-                    <label for="new-comment-category">Category: </label>
-                    <input type="dropdown" id="new-comment-category"></input>
-                    <label for="new-comment-title">Title: </label>
-                    <input type="text" id="new-comment-title"></input>
-                    <label for="new-comment-text">Text: </label>
-                    <textarea id="new-comment-text"></textarea>
-                    
-                </div>
+                <form id="new-topic" onSubmit={this.submitNewTopic}>
+                    <h3>Start new topic</h3>
+                    <label for="new-topic-category">Category: </label>
+                    <select name="new-topic-category" id="new-topic-category" required>
+                        <option disabled selected>Choose a category</option>
+                        <option value="kashyas">Kashya</option>
+                        <option value="questions">Question</option>
+                        <option value="references">Reference</option>
+                        <option value="chiddushim">Chiddush</option></select>
+                    <label for="new-topic-title">Title: </label>
+                    <input type="text" id="new-topic-title" required></input>
+                    <label for="new-topic-text">Text: </label>
+                    <textarea id="new-topic-text" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
                 <h2>Questions</h2>
                 <div id="questions">
                     {this.state.questionInfo && this.state.questionInfo.map(topic => this.createTopicContainer(topic))}
