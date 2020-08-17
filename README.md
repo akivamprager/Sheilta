@@ -39,7 +39,7 @@ Sefaria clone with Stack Overflow-like features
 The project source code has two main directories:
 
  - api/v1 - this is not meant for the user's browser to read - it hosts all of the API methods to connect to sefaria and discourse. The client side "public" folder calls the API whenever it needs to connect to anything.
- - public - this is what the client side sees, at index.html (right now we're working on a React replacement for the index.html, at index2.html - this will eventually be renamed and replace index.html)
+ - public - this is what the client side sees, at index.html
 	 - the "js" folder has all the javascript methods that access the API
 
 The structure for the index.html page is as following:
