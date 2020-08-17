@@ -12,5 +12,5 @@ app.use(bodyParser.json());
 app.use("/api/v1", v1ApiRouter);
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+  console.log(`App listening at http://localhost:${port}`);
 })

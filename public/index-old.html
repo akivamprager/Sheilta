@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <script type='text/javascript' src='axios/dist/axios.min.js'></script>
+    <script src="./js/get-texts-and-topics.js"></script>
+
+</head>
+
+<body onload="onPageLoad()">
+    <h2>Sefaria Text</h2>
+    <div id="sefaria" dir="rtl"></div>
+    <hr>
+    <h2>Questions</h2>
+    <div id="discourseQuestions"></div>
+    <hr>
+    <h2>Kashyas</h2>
+    <div id="discourseKashyas"></div>
+    <hr>
+    <h2>Chiddushim</h2>
+    <div id="discourseChiddushim"></div>
+    <hr>
+    <h2>References</h2>
+    <div id="discourseReferences"></div>
+
+    <script>
+        async function onPageLoad() {
+          const textId = new URLSearchParams(location.search).get("location");
+          populateText(document.getElementById("sefaria"), await getText(textId));
+          document.getElementById("discourseQuestions").innerHTML = await getTopics(textId, "questions");
+          document.getElementById("discourseKashyas").innerHTML = await getTopics(textId, "kashyas");
+          document.getElementById("discourseChiddushim").innerHTML = await getTopics(textId, "chiddushim");
+          document.getElementById("discourseReferences").innerHTML = await getTopics(textId, "references");
+        }
+
+        function populateText(container, textResponse) {
+          // clear container
+          const hebrewLines = textResponse.he;
+          hebrewLines.forEach(line => {
+            container.appendChild(createTextLine(line));
+          });
+        }
+
+        function createTextLine(line) {
+          const lineElem = document.createElement("div");
+          lineElem.appendChild(document.createTextNode(line));
+          const textElem = document.createElement("div");
+          const commentControl = document.createElement("button");
+          lineElem.appendChild(textElem);
+          lineElem.appendChild(commentControl);
+          return lineElem;
+        }
+    </script>
+
+</body>
+
+</html>
