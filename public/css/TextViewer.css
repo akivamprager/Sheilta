@@ -1,3 +1,9 @@
 .hidden {
     display: none;
 }
+.topic-container {
+    cursor: pointer;
+}
+.topic-title {
+    font-weight: bold;
+}

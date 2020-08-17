@@ -15,7 +15,7 @@ class Post extends React.Component {
         return (
             <div>
                 <span>{this.state.body}</span>
-                <button onClick={this.onClick}>+</button>
+                <button onClick={this.onClick}>Reply</button>
             </div>
         );
     }
