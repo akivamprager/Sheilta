@@ -9,9 +9,13 @@ async function getTopics(textId, category) {
     const discourseRes = await axios.get(`/api/v1/categories/${category}/${topicId}`);
     const topicList = [];
     const topics = discourseRes.data.topics;
+    const requests = [];
     for (let i = 0; i < topics.length; i++) {
         const result = topics[i];
-        const topic = await axios.get(`/api/v1/topics/${result.id}`);
+        requests.push(axios.get(`/api/v1/topics/${result.id}`));
+    }
+    for (let i = 0; i < requests.length; i++) {
+        const topic = await requests[i];
         topicList.push(topic.data);
     }
     return topicList;

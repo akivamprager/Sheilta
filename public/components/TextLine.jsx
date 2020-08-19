@@ -8,14 +8,15 @@ class TextLine extends React.Component {
     }
 
     onClick() {
-        this.props.onNewTopic(this.props.lineNum);
+        this.props.launchTopicDialog(this.props.lineNum);
     }
 
     render() {
         return (
             <div>
                 <span>{this.state.line}</span>
-                <button onClick={this.onClick}>+</button>
+                <button className="uk-icon-link" uk-icon="comment" onClick={this.onClick}></button>
+                { this.props.topicDialog }
             </div>
         );
     }

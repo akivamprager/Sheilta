@@ -1,10 +1,20 @@
 // all of the functions for POSTing posts to Discourse
-async function createNewTopic(category, topicTitle, text, context) {
-    const tag = new URLSearchParams(location.search).get("location").replace(/[.]/g, "-") + "-" + context;
+async function createNewTopic(textId, category, topicTitle, text, context) {
+    const tag = textId.replace(/[.]/g, "-") + "-" + context;
+    let categoryCode = 0;
+    if (category === "questions")
+        categoryCode = 5;
+    else if (category === "kashyas")
+        categoryCode = 6;
+    else if (category === "references")
+        categoryCode = 7;
+    else if (category === "chiddushim")
+        categoryCode = 8;
+
     const topic = {
         "title": topicTitle,
         "raw": text,
-        "category": category,
+        "category": categoryCode,
         "tags": [
             tag
         ]
@@ -15,7 +25,7 @@ async function createNewTopic(category, topicTitle, text, context) {
 async function createComment(topicId, text) {
     const comment = {
         "topic_id": topicId,
-        "raw": text 
+        "raw": text
     }
     return await axios.post(`/api/v1/topics/${topicId}/comments`, comment);
 }
