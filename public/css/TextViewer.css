@@ -1,9 +1,38 @@
+@font-face {
+    font-family: 'hadasim_clmregular';
+    src: url('../fonts/hadasimclm-regular-webfont.woff2') format('woff2'),
+        url('../fonts/hadasimclm-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'hadasim_clmbold';
+    src: url('../fonts/hadasimclm-bold-webfont.woff2') format('woff2'),
+         url('../fonts/hadasimclm-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 .hidden {
     display: none;
 }
+
 .topic-container {
     cursor: pointer;
 }
+
 .topic-title {
     font-weight: bold;
+}
+
+.text-line {
+    font-family: "hadasim_clmregular", Arial, sans-serif;
+    font-size: large
+}
+
+h2#source-title {
+    font-family: "hadasim_clmbold", Arial, sans-serif;
 }

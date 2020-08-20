@@ -8,14 +8,15 @@ class Post extends React.Component {
     }
 
     onClick() {
-        this.props.onNewComment(this.props.topicId);
+        this.props.launchCommentDialog(this.props.topicId);
     }
 
     render() {
         return (
             <div>
                 <span>{this.state.body}</span>
-                <button onClick={this.onClick}>Reply</button>
+                <button className="uk-icon-link" uk-icon="commenting" onClick={this.onClick}></button>
+                { this.props.commentDialog }  
             </div>
         );
     }

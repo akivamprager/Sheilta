@@ -1,5 +1,5 @@
 // all of the functions for POSTing posts to Discourse
-async function createNewTopic(textId, category, topicTitle, text, context) {
+async function createTopic(textId, category, topicTitle, text, context) {
     const tag = textId.replace(/[.]/g, "-") + "-" + context;
     let categoryCode = 0;
     if (category === "questions")

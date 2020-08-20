@@ -29,6 +29,7 @@ async function proxyRequest(req, res, axiosReq) {
         res.json((await axios(axiosReq)).data);
     } catch (e) {
         console.error(e);
+        console.error(e+"\n"+"Error Message: "+e.response.statusText);
         res.status(500).json({
             error: e + ""
         });
@@ -36,11 +37,10 @@ async function proxyRequest(req, res, axiosReq) {
 }
 
 
-
 // List all topics for source
-//router.get("/", async (req, res) => {
-  //  proxyRequest(req, res, createDiscourseRequest("GET", `search?expanded=true&q=%23${category}%20tags%3A${tag}`));
-//});
+router.get("/tags/:tag", async (req, res) => {
+    proxyRequest(req, res, createDiscourseRequest("GET", `tag/${req.params.tag}.json?order=category`));
+});
 
 // Create a new topic
 router.post("/", async (req, res) => {
@@ -49,7 +49,7 @@ router.post("/", async (req, res) => {
 
 // Get existing topic
 router.get("/:topicId", async (req, res) => {
-    proxyRequest(req, res, createDiscourseRequest("GET", `t/${req.params.topicId}`));//, req.body));
+    proxyRequest(req, res, createDiscourseRequest("GET", `t/${req.params.topicId}`));
 });
 
 // Update existing topic

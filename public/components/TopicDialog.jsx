@@ -20,21 +20,21 @@ class TopicDialog extends React.Component {
         //<button type="button" uk-close="true" uk-toggle={uktoggle}></button>
  
         return (
-            <div className="uk-container uk-card-default uk-card-small" id={id}>
+            <div className=" uk-card-small" id={id}>
                 <div className="uk-card-header">
                     <h3 className="uk-card-title">Start new topic</h3>
                 </div>
                 <div className="uk-card-body">
-                    <label htmlFor="new-topic-category">Category: </label>
+                    <label className="uk-form-label" htmlFor="new-topic-category">Category: </label>
                     <select name="new-topic-category" id="new-topic-category" className="uk-select" required>
                         <option disabled={true} defaultValue>Choose a category</option>
                         <option value="kashyas">Kashya</option>
                         <option value="questions">Question</option>
                         <option value="references">Reference</option>
                         <option value="chiddushim">Chiddush</option></select>
-                    <label htmlFor="new-topic-title">Title: </label>
+                    <label className="uk-form-label" htmlFor="new-topic-title">Title: </label>
                     <input type="text" id="new-topic-title" className="uk-input" required></input>
-                    <label htmlFor="new-topic-text">Text: </label>
+                    <label className="uk-form-label" htmlFor="new-topic-text">Text: </label>
                     <textarea id="new-topic-text" className="uk-textarea" required></textarea>
                 </div>
                 <div className="uk-card-footer">
