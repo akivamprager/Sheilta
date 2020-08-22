@@ -33,12 +33,15 @@ function parseSourceToURLParam(sourceName) {
 }
 function skipPage(textId, direction) {
     let location = textId;
+    let locArr = location.split(".");
+    let lastPart = locArr[locArr.length-1];
     if (direction === "next") {
-        if (location.endsWith("a")) {
-            location = replaceAt(location, location.length - 1, "b");
-        } else if (location.endsWith("b")) {
-            num = parseInt(location.charAt(location.length - 2)) + 1;
-            location = replaceAt(location, location.length - 2, num);
+        if (lastPart.endsWith("a")) {
+            lastPart = replaceAt(lastPart, lastPart.length - 1, "b");
+        } else if (lastPart.endsWith("b")) {
+            let lastArr = lastPart.
+            let num = parseInt(lastPart.substring(0, lastPart.length - 1))+1;
+            lastPart = 
             location = replaceAt(location, location.length - 1, "a");
         } else {
             num = parseInt(location.charAt(location.length - 1)) + 1;

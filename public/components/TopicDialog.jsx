@@ -20,7 +20,7 @@ class TopicDialog extends React.Component {
         //<button type="button" uk-close="true" uk-toggle={uktoggle}></button>
  
         return (
-            <div className=" uk-card-small" id={id}>
+            <div className="uk-card-default uk-card-small uk-width-1-2@m" id={id}>
                 <div className="uk-card-header">
                     <h3 className="uk-card-title">Start new topic</h3>
                 </div>

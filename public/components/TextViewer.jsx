@@ -22,13 +22,25 @@ class TextViewer extends React.Component {
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
         this.showTopicsForLine = this.showTopicsForLine.bind(this);
-        
+
     }
 
     fetchText() {
-        getText(this.props.textId).then((textInfo) => {
-            this.setState({ textInfo: textInfo });
-        });
+        if (this.props.textId === null) {
+            redirectToSource("bereshit.1");
+        } else {
+            try {
+                getText(this.props.textId).then((textInfo) => {
+                    this.setState({ textInfo: textInfo });
+                });
+            } catch (error) {
+                this.showAlert({
+                    status: "error",
+                    message: "The source you have entered does not exist."
+                });
+                setTimeout(redirectToSource("bereshit.1"), 3000);
+            }
+        }
     }
 
     fetchTopics(topicConfig) {
@@ -64,6 +76,7 @@ class TextViewer extends React.Component {
             "chiddushim": "chiddushInfo",
             "references": "referenceInfo"
         }, lineNum);
+        document.getElementById("topics").scrollIntoView();
     }
     launchTopicDialog(lineNum) {
         const topicDialog = (<TopicDialog lineNum={lineNum} onSubmitTopic={this.onSubmitTopic} />);
@@ -123,7 +136,7 @@ class TextViewer extends React.Component {
         }
         const commentDialog = (this.state.selectedTopicId === topic.id) ? this.state.commentDialog : null;
         return (
-            <div key={topic.id} className="topic-container" onClick={this.toggleTopic.bind(this, topic)}>
+            <div uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" key={topic.id} className="topic-container" onClick={this.toggleTopic.bind(this, topic)}>
                 <span className="topic-title">{topic.title}</span>
                 <div className={textClasses.join(" ")}>
                     {
@@ -164,6 +177,7 @@ class TextViewer extends React.Component {
 
     render() {
         return (
+           // <ErrorBoundary>
             <div>
                 <nav className="uk-navbar-container uk-margin" uk-navbar="true">
                     <div className="uk-navbar-left">
@@ -193,17 +207,16 @@ class TextViewer extends React.Component {
                     </li>
                 </ul>
                 <div>
-                    <div id="texts" className="uk-container uk-background-muted" dir="rtl">
-                        <h2 id="source-title">{this.state.textInfo.heRef}</h2>
-                        {this.state.textInfo &&
-                            this.state.textInfo.he.map((line, index) => {
-                                const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
-                                return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
-                            })
-                        }
-                    </div>
-
-                    <ReactTabs.Tabs>
+                        <div id="texts" className="uk-container uk-background-muted" dir="rtl">
+                            <h2 id="source-title">{this.state.textInfo.heRef}</h2>
+                            {this.state.textInfo &&
+                                this.state.textInfo.he.map((line, index) => {
+                                    const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
+                                    return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
+                                })
+                            }
+                        </div>
+                    <ReactTabs.Tabs id="topics">
                         <ReactTabs.TabList>
                             <ReactTabs.Tab>Questions</ReactTabs.Tab>
                             <ReactTabs.Tab>Kashyas</ReactTabs.Tab>
@@ -224,7 +237,14 @@ class TextViewer extends React.Component {
                         </ReactTabs.TabPanel>
                     </ReactTabs.Tabs>
                 </div>
+
+
+
+
+
+
             </div>
+          //  </ErrorBoundary>
         );
     }
 }

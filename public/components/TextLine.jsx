@@ -15,14 +15,21 @@ class TextLine extends React.Component {
     onShowTopics() {
         this.props.showTopicsForLine(this.props.lineNum);
     }
-    
+
     render() {
         return (
-            <div>
-                <span className="text-line">{this.state.line}</span>
-                <button className="uk-icon-link uk-margin-small-left uk-margin-small-right" uk-icon="pencil" onClick={this.onNewTopic}></button>
-                <button className="uk-icon-link" uk-icon="comments" onClick={this.onShowTopics}></button>
-                { this.props.topicDialog }
+            <div className="uk-visible-toggle" tabIndex="-1">
+                <div uk-grid="true">
+                    <div className="uk-width-expand text-line">{this.state.line}</div>
+                    <div className="uk-width-auto">
+                        <ul className="uk-invisible-hover uk-iconnav">
+                            <li><button uk-tooltip="title: Create new post; delay: 300" className="uk-icon-link uk-margin-small-left uk-margin-small-right" uk-icon="pencil" onClick={this.onNewTopic}></button></li>
+                            <li><button uk-tooltip="title: Show posts; delay: 300" className="uk-icon-link" uk-icon="comments" onClick={this.onShowTopics}></button></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {this.props.topicDialog}
             </div>
         );
     }
