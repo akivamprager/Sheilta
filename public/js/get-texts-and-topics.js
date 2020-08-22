@@ -34,30 +34,33 @@ function parseSourceToURLParam(sourceName) {
 function skipPage(textId, direction) {
     let location = textId;
     let locArr = location.split(".");
-    let lastPart = locArr[locArr.length-1];
+    let lastPart = locArr[locArr.length - 1];
     if (direction === "next") {
         if (lastPart.endsWith("a")) {
-            lastPart = replaceAt(lastPart, lastPart.length - 1, "b");
+            location = replaceAt(location, location.length - 1, "b");
         } else if (lastPart.endsWith("b")) {
-            let lastArr = lastPart.
-            let num = parseInt(lastPart.substring(0, lastPart.length - 1))+1;
-            lastPart = 
-            location = replaceAt(location, location.length - 1, "a");
+            let num = parseInt(lastPart.substring(0, lastPart.length - 1));
+            let newLast = (num + 1) + "a";
+            locArr[locArr.length - 1] = newLast;
+            location = locArr.join();
         } else {
-            num = parseInt(location.charAt(location.length - 1)) + 1;
-            location = replaceAt(location, location.length - 1, num);
+            num = parseInt(lastPart) + 1;
+            locArr[locArr.length - 1] = num;
+            location = locArr.join();
         }
     }
     else if (direction === "previous") {
         if (location.endsWith("a")) {
-            location = replaceAt(location, location.length - 1, "b");
-            num = parseInt(location.charAt(location.length - 2)) - 1;
-            location = replaceAt(location, location.length - 2, num);
+            let num = parseInt(lastPart.substring(0, lastPart.length - 1));
+            let newLast = (num - 1) + "b";
+            locArr[locArr.length - 1] = newLast;
+            location = locArr.join();
         } else if (location.endsWith("b")) {
             location = replaceAt(location, location.length - 1, "a");
         } else {
-            num = parseInt(location.charAt(location.length - 1)) - 1;
-            location = replaceAt(location, location.length - 1, num);
+            num = parseInt(lastPart) - 1;
+            locArr[locArr.length - 1] = num;
+            location = locArr.join();
         }
     }
     redirectToSource(location);
@@ -66,6 +69,7 @@ function redirectToSource(textId) {
     location.href = location.origin + location.pathname + parseSourceToURLParam(textId);
 }
 
+//---util
 function replaceAt(string, index, replace) {
     return string.substring(0, index) + replace + string.substring(index + 1);
 }
