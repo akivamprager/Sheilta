@@ -136,14 +136,17 @@ class TextViewer extends React.Component {
         }
         const commentDialog = (this.state.selectedTopicId === topic.id) ? this.state.commentDialog : null;
         return (
-            <div uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" key={topic.id} className="topic-container" onClick={this.toggleTopic.bind(this, topic)}>
-                <span className="topic-title">{topic.title}</span>
+            <div key={topic.id} className="topic-container">
+                <span uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" onClick={this.toggleTopic.bind(this, topic)} className="topic-title">{topic.title}</span>
                 <div className={textClasses.join(" ")}>
-                    {
-                        topic.post_stream.posts.map(post => {
-                            <Post key={post.id} body={post.cooked} topicId={post.topic_id} commentDialog={commentDialog} launchCommentDialog={this.launchCommentDialog} />
-                        })
-                    }
+                    <ul className="uk-comment-list uk-padding">
+
+                        {
+                            topic.post_stream.posts.map((post) => (
+                                <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.username} date={post.created_at} commentDialog={commentDialog} launchCommentDialog={this.launchCommentDialog} />)
+                            )
+                        }
+                    </ul>
                 </div>
             </div>
         );
@@ -177,9 +180,9 @@ class TextViewer extends React.Component {
 
     render() {
         return (
-           // <ErrorBoundary>
+            // <ErrorBoundary>
             <div>
-                <nav className="uk-navbar-container uk-margin" uk-navbar="true">
+                <nav className="uk-navbar-container uk-margin uk-background-primary" uk-navbar="true">
                     <div className="uk-navbar-left">
                         <a className="uk-navbar-item uk-logo" href="#">Sefaria</a>
                         <ul className="uk-navbar-nav">
@@ -207,15 +210,15 @@ class TextViewer extends React.Component {
                     </li>
                 </ul>
                 <div>
-                        <div id="texts" className="uk-container uk-background-muted" dir="rtl">
-                            <h2 id="source-title">{this.state.textInfo.heRef}</h2>
-                            {this.state.textInfo &&
-                                this.state.textInfo.he.map((line, index) => {
-                                    const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
-                                    return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
-                                })
-                            }
-                        </div>
+                    <div id="texts" className="uk-container uk-background-muted" dir="rtl">
+                        <h2 id="source-title">{this.state.textInfo.heRef}</h2>
+                        {this.state.textInfo &&
+                            this.state.textInfo.he.map((line, index) => {
+                                const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
+                                return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
+                            })
+                        }
+                    </div>
                     <ReactTabs.Tabs id="topics">
                         <ReactTabs.TabList>
                             <ReactTabs.Tab>Questions</ReactTabs.Tab>
@@ -244,7 +247,7 @@ class TextViewer extends React.Component {
 
 
             </div>
-          //  </ErrorBoundary>
+            //  </ErrorBoundary>
         );
     }
 }

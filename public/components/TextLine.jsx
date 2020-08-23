@@ -2,13 +2,15 @@ class TextLine extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            line: props.line
+            line: props.line,
+            open: false
         };
         this.onNewTopic = this.onNewTopic.bind(this);
         this.onShowTopics = this.onShowTopics.bind(this);
     }
 
     onNewTopic() {
+        this.setState({ open: !this.state.open });
         this.props.launchTopicDialog(this.props.lineNum);
     }
 
@@ -29,7 +31,7 @@ class TextLine extends React.Component {
                     </div>
                 </div>
 
-                {this.props.topicDialog}
+                {this.state.open && this.props.topicDialog}
             </div>
         );
     }
