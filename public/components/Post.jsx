@@ -5,7 +5,8 @@ class Post extends React.Component {
             body: props.body,
             author: props.author,
             date: props.date,
-            open: false
+            open: false,
+            vote: null
         };
         this.onClick = this.onClick.bind(this);
     }
@@ -16,6 +17,17 @@ class Post extends React.Component {
         event.preventDefault();
         event.stopPropagation();
     }
+
+    onUpvote() {
+        this.setState( { vote: up });
+        this.props.upvote(this.props.postId);
+    }
+
+    onDownvote() {
+        this.setState( { vote: down });
+        this.props.downvote(this.props.postId);
+    }
+
     render() {
         return (
             
@@ -35,8 +47,8 @@ class Post extends React.Component {
                     <div className="uk-comment-body" dangerouslySetInnerHTML={{__html: this.state.body }}></div>
                     {this.state.open && this.props.commentDialog}
                     <ul className="uk-iconnav ">
-                        <li><a href="#" uk-tooltip="title: Upvote post; delay: 300" uk-icon="icon: chevron-up"></a></li>
-                        <li><a href="#" uk-tooltip="title: Downvote post; delay: 300" uk-icon="icon: chevron-down"></a></li>
+                        <li><a onClick={this.onUpvote} uk-tooltip="title: Upvote post; delay: 300" uk-icon="icon: chevron-up"></a></li>
+                        <li><a onClick={this.onDownvote} uk-tooltip="title: Downvote post; delay: 300" uk-icon="icon: chevron-down"></a></li>
                     </ul>
                     
                 </article>

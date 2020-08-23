@@ -22,7 +22,8 @@ class TextViewer extends React.Component {
         this.gotoNext = this.gotoNext.bind(this);
         this.gotoPrevious = this.gotoPrevious.bind(this);
         this.showTopicsForLine = this.showTopicsForLine.bind(this);
-
+        this.upvote = this.upvote.bind(this);
+        this.downvote = this.downvote.bind(this);
     }
 
     fetchText() {
@@ -106,6 +107,21 @@ class TextViewer extends React.Component {
         });
     }
 
+    upvote(postId) {
+        const response = await upvotePost(postId);
+        this.showAlert({
+            status: "success",
+            message: "Post has been upvoted"
+        });
+    }
+
+    downvote(postId) {
+        const response = await downvotePost(postId);
+        this.showAlert({
+            status: "success",
+            message: "Post has been downvoted"
+        });
+    }
     async onSubmitComment(topicId, text) {
         const response = await createComment(textId, text, topicId);
         this.showAlert({
@@ -143,7 +159,7 @@ class TextViewer extends React.Component {
 
                         {
                             topic.post_stream.posts.map((post) => (
-                                <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.username} date={post.created_at} commentDialog={commentDialog} launchCommentDialog={this.launchCommentDialog} />)
+                                <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.username} date={post.created_at} postId={post.id} commentDialog={commentDialog} upvote={this.upvote} downvote={this.downvote} launchCommentDialog={this.launchCommentDialog} />)
                             )
                         }
                     </ul>
