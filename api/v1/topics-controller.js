@@ -7,7 +7,7 @@ function createCommonHeaders() {
     return {
         "Content-Type": "application/json",
         "Api-Key": secrets.discourse_global_key,
-        "Api-Username": "system",
+        "Api-Username": (typeof window !== 'undefined') ? localStorage.getItem("user").replace(/\s+/g, '') : "system",
         "Accept": "application/json"
     };
 }

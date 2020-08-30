@@ -11,6 +11,8 @@ class TextViewer extends React.Component {
             referenceInfo: [],
             sections: {},
             searchValue: ''
+            // , isAuthenticated : isAuthenticated()
+
         };
         this.launchTopicDialog = this.launchTopicDialog.bind(this);
         this.onSubmitTopic = this.onSubmitTopic.bind(this);
@@ -24,6 +26,7 @@ class TextViewer extends React.Component {
         this.showTopicsForLine = this.showTopicsForLine.bind(this);
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
+        this.loginModal = this.loginModal.bind(this);
     }
 
     fetchText() {
@@ -69,6 +72,8 @@ class TextViewer extends React.Component {
             "chiddushim": "chiddushInfo",
             "references": "referenceInfo"
         });
+        //const username = localStorage.getItem('name');
+        //this.setState({ username });
     }
     async showTopicsForLine(lineNum) {
         this.fetchTopicsForLine({
@@ -80,6 +85,8 @@ class TextViewer extends React.Component {
         document.getElementById("topics").scrollIntoView();
     }
     launchTopicDialog(lineNum) {
+        if (localStorage.getItem('user') === null || localStorage.getItem('user') === "null")
+            this.loginModal();
         const topicDialog = (<TopicDialog lineNum={lineNum} onSubmitTopic={this.onSubmitTopic} />);
         this.setState({
             topicDialog: topicDialog,
@@ -100,6 +107,8 @@ class TextViewer extends React.Component {
     }
 
     launchCommentDialog(topicId) {
+        if (localStorage.getItem('user') === null || localStorage.getItem('user') === "null")
+            this.loginModal();
         const commentDialog = (<CommentDialog topicId={topicId} onSubmitComment={this.onSubmitComment} />);
         this.setState({
             commentDialog: commentDialog,
@@ -107,23 +116,23 @@ class TextViewer extends React.Component {
         });
     }
 
-    upvote(postId) {
-        const response = await upvotePost(postId);
+    async upvote(postId) {
+        const response = await votePost(postId, "up");
         this.showAlert({
             status: "success",
             message: "Post has been upvoted"
         });
     }
 
-    downvote(postId) {
-        const response = await downvotePost(postId);
+    async downvote(postId) {
+        const response = await votePost(postId, "down");
         this.showAlert({
             status: "success",
             message: "Post has been downvoted"
         });
     }
     async onSubmitComment(topicId, text) {
-        const response = await createComment(textId, text, topicId);
+        const response = await createComment(topicId, text);
         this.showAlert({
             status: "success",
             message: "Your comment has been saved!"
@@ -151,20 +160,26 @@ class TextViewer extends React.Component {
             textClasses.push("hidden");
         }
         const commentDialog = (this.state.selectedTopicId === topic.id) ? this.state.commentDialog : null;
+        const createdAt = convertDate(topic.created_at);
         return (
-            <div key={topic.id} className="topic-container">
-                <span uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" onClick={this.toggleTopic.bind(this, topic)} className="topic-title">{topic.title}</span>
-                <div className={textClasses.join(" ")}>
-                    <ul className="uk-comment-list uk-padding">
+            <dt>
+                <div key={topic.id} className="topic-container">
+                    <div uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" onClick={this.toggleTopic.bind(this, topic)}>
+                        <span className="topic-title">{topic.title}</span>
+                        <dd>{createdAt}</dd>
+                    </div>
+                    <div className={textClasses.join(" ")}>
+                        <ul className="uk-comment-list uk-padding">
 
-                        {
-                            topic.post_stream.posts.map((post) => (
-                                <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.username} date={post.created_at} postId={post.id} commentDialog={commentDialog} upvote={this.upvote} downvote={this.downvote} launchCommentDialog={this.launchCommentDialog} />)
-                            )
-                        }
-                    </ul>
+                            {
+                                topic.post_stream.posts.map((post) => (
+                                    <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.name} date={post.created_at} profileColor={localStorage.getItem("profileColor")} postId={post.id} commentDialog={commentDialog} upvote={this.upvote} downvote={this.downvote} launchCommentDialog={this.launchCommentDialog} />)
+                                )
+                            }
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </dt>
         );
     }
 
@@ -194,6 +209,34 @@ class TextViewer extends React.Component {
         skipPage(this.props.textId, "previous");
     }
 
+    /*UserGreeting(props) {
+        return <h1>Welcome back!</h1>;
+    }
+
+    GuestGreeting(props) {
+        return <h1>Please sign up.</h1>;
+    }
+
+    Greeting(props) {
+        const isLoggedIn = props.isLoggedIn;
+        if (isLoggedIn) {
+          return <UserGreeting />;
+        }
+        return <GuestGreeting />;
+    }*/
+    /*login(){
+        login();
+    }
+    logout(){
+        logout();
+    }*/
+    loginModal() {
+        UIkit.modal.prompt('Enter your name:', '').then(function (user) {
+            localStorage.setItem("user", user);
+            localStorage.setItem("profileColor", Math.floor(Math.random() * 16777215).toString(16));
+            createNewUserWithoutEmail(user);
+        });
+    }
     render() {
         return (
             // <ErrorBoundary>
@@ -202,7 +245,7 @@ class TextViewer extends React.Component {
                     <div className="uk-navbar-left">
                         <a className="uk-navbar-item uk-logo" href="#">Sefaria</a>
                         <ul className="uk-navbar-nav">
-                            <li className="uk-active"><a href="#">Active</a></li>
+                            <li><a onClick={this.loginModal}>Login</a></li>
                             <li><a href="#">Item</a></li>
                         </ul>
                     </div>
@@ -243,25 +286,27 @@ class TextViewer extends React.Component {
                             <ReactTabs.Tab>References</ReactTabs.Tab>
                         </ReactTabs.TabList>
                         <ReactTabs.TabPanel id="questions">
-                            {this.state.questionInfo && this.state.questionInfo.map(topic => this.createTopicContainer(topic))}
+                            <dl className="uk-description-list uk-description-list-divider">
+                                {this.state.questionInfo && this.state.questionInfo.map(topic => this.createTopicContainer(topic))}
+                            </dl>
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="kashyas">
-                            {this.state.kashyaInfo && this.state.kashyaInfo.map(topic => this.createTopicContainer(topic))}
+                            <dl className="uk-description-list uk-description-list-divider">
+                                {this.state.kashyaInfo && this.state.kashyaInfo.map(topic => this.createTopicContainer(topic))}
+                            </dl>
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="chiddushim">
-                            {this.state.chiddushInfo && this.state.chiddushInfo.map(topic => this.createTopicContainer(topic))}
+                            <dl className="uk-description-list uk-description-list-divider">
+                                {this.state.chiddushInfo && this.state.chiddushInfo.map(topic => this.createTopicContainer(topic))}
+                            </dl>
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="references">
-                            {this.state.referenceInfo && this.state.referenceInfo.map(topic => this.createTopicContainer(topic))}
+                            <dl className="uk-description-list uk-description-list-divider">
+                                {this.state.referenceInfo && this.state.referenceInfo.map(topic => this.createTopicContainer(topic))}
+                            </dl>
                         </ReactTabs.TabPanel>
                     </ReactTabs.Tabs>
                 </div>
-
-
-
-
-
-
             </div>
             //  </ErrorBoundary>
         );

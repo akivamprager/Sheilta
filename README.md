@@ -97,3 +97,5 @@ Just call or whatsapp me...
 ## What it should (sort of) look like at the end
 
 ![image](public/images/sefaria_concept1.png)
+
+https://auth0.com/blog/create-a-simple-and-secure-node-express-app/

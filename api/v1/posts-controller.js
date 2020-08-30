@@ -7,7 +7,7 @@ function createCommonHeaders() {
     return {
         "Content-Type": "application/json",
         "Api-Key": secrets.discourse_global_key,
-        "Api-Username": "system",
+        "Api-Username": (typeof window !== 'undefined') ? localStorage.getItem("user").replace(/\s+/g, '') : "system",
         "Accept": "application/json"
     };
 }
@@ -41,9 +41,9 @@ router.get("/:postId", async (req, res) => {
     proxyRequest(req, res, createDiscourseRequest("GET", ``));
 });
 
-// Create a new topic
-router.post("/:postId", async (req, res) => {
-    proxyRequest(req, res, createDiscourseRequest("POST", "posts", req.body));
+// Upvote or downvote
+router.post("/:postId/vote", async (req, res) => {
+    proxyRequest(req, res, createDiscourseRequest("POST", "qa/vote", req.body));
 });
 
 module.exports = router;

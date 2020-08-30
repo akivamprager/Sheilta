@@ -22,7 +22,7 @@ class TextLine extends React.Component {
         return (
             <div className="uk-visible-toggle" tabIndex="-1">
                 <div uk-grid="true">
-                    <div className="uk-width-expand text-line">{this.state.line}</div>
+                    <div className="uk-width-expand text-line" dangerouslySetInnerHTML={{__html: this.state.line }}></div>
                     <div className="uk-width-auto">
                         <ul className="uk-invisible-hover uk-iconnav">
                             <li><button uk-tooltip="title: Create new post; delay: 300" className="uk-icon-link uk-margin-small-left uk-margin-small-right" uk-icon="pencil" onClick={this.onNewTopic}></button></li>

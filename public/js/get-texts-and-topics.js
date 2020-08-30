@@ -1,4 +1,6 @@
 // functions for getting the texts and topics from sefaria and discourse
+
+//const express = require("express");
 async function getText(textId) {
     const sefariaRes = await axios.get(`/api/v1/texts/${textId}`);
     return sefariaRes.data;
@@ -68,7 +70,17 @@ function skipPage(textId, direction) {
 function redirectToSource(textId) {
     location.href = location.origin + location.pathname + parseSourceToURLParam(textId);
 }
-
+function convertDate(timestamp){
+    const readable = new Date(timestamp);
+    const m = readable.getMonth();  
+    const d = readable.getDate();  
+    const y = readable.getFullYear();
+    const h = readable.getHours();
+    const mi = readable.getMinutes();
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    const mlong = months[m];
+    return `${mlong} ${d}, ${y} • ${h}:${mi}`;
+}
 //---util
 function replaceAt(string, index, replace) {
     return string.substring(0, index) + replace + string.substring(index + 1);

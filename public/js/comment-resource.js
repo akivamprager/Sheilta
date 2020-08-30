@@ -30,10 +30,10 @@ async function createComment(topicId, text) {
     return await axios.post(`/api/v1/topics/${topicId}/comments`, comment);
 }
 
-async function upvotePost(postId) {
-    return await axios.post(`/api/v1/posts/${postId}/upvote`);
-}
-
-async function downvotePost(postId) {
-    return await axios.post(`/api/v1/posts/${postId}/downvote`);
+async function votePost(postId, direction) {
+    const vote = {
+        "post_id": postId,
+        "direction" : direction
+    }
+    return await axios.post(`/api/v1/posts/${postId}/vote`, vote);
 }
