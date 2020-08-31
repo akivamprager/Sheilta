@@ -7,7 +7,15 @@ function createCommonHeaders() {
     return {
         "Content-Type": "application/json",
         "Api-Key": secrets.discourse_global_key,
-        "Api-Username": (typeof window !== 'undefined') ? localStorage.getItem("user").replace(/\s+/g, '') : "system",
+        "Api-Username": "system",
+        "Accept": "application/json"
+    };
+}
+function createUserHeaders(user) {
+    return {
+        "Content-Type": "application/json",
+        "Api-Key": secrets.discourse_global_key,
+        "Api-Username": /*(user===null) ? "system" :*/ user.replace(/\s+/g, ''),///*(typeof window !== 'undefined') ?*/ localStorage.getItem("user").replace(/\s+/g, ''), //: "system",
         "Accept": "application/json"
     };
 }
@@ -23,13 +31,21 @@ function createDiscourseRequest(method, path, data) {
         data: data
     };
 }
+function createDiscourseUserRequest(method, path, data, user) {
+    return {
+        method: method,
+        headers: createUserHeaders(user),
+        url: createDiscourseUrl(path),
+        data: data
+    };
+}
 
 async function proxyRequest(req, res, axiosReq) {
     try {
         res.json((await axios(axiosReq)).data);
     } catch (e) {
         console.error(e);
-        console.error(e+"\n"+"Error Message: "+e.response.statusText);
+        console.error(e + "\n" + "Error Message: " + e.response.statusText);
         res.status(500).json({
             error: e + ""
         });
@@ -43,8 +59,8 @@ router.get("/tags/:tag", async (req, res) => {
 });
 
 // Create a new topic
-router.post("/", async (req, res) => {
-    proxyRequest(req, res, createDiscourseRequest("POST", "posts", req.body));
+router.post("/:user", async (req, res) => {
+    proxyRequest(req, res, createDiscourseUserRequest("POST", "posts", req.body, req.params.user));
 });
 
 // Get existing topic
@@ -70,8 +86,8 @@ router.get("/:topicId/comments", async (req, res) => {
 });
 
 // Create a comment on an existing topic
-router.post("/:topicId/comments", async (req, res) => {
-    proxyRequest(req, res, createDiscourseRequest("POST", "posts", req.body));
+router.post("/:topicId/comments/:user", async (req, res) => {
+    proxyRequest(req, res, createDiscourseUserRequest("POST", "posts", req.body, req.params.user));
 });
 
 // Get an existing comment on an existing topic

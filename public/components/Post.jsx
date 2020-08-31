@@ -33,23 +33,22 @@ class Post extends React.Component {
 
     render() {
         const author = this.state.author.replace(' ', '+');
-        const profileColor = (this.state.profileColor===null) ? Math.floor(Math.random()*16777215).toString(16) : this.state.profileColor;
-        const profileUrl = `https://ui-avatars.com/api/?name=${author}&background=${this.state.profileColor}`;
+        //const profileColor = this.state.profileColor;
+        const profileUrl = `https://ui-avatars.com/api/?name=${author}`;//&background=${this.state.profileColor}`;
         const date = convertDate(this.state.date);
         return (
-
-            <article className="uk-comment uk-visible-toggle uk-card uk-card-hover uk-card-default uk-card-small uk-card-body" tabIndex="-1">
+            <article className="uk-comment uk-visible-toggle uk-card uk-card-hover uk-card-default uk-card-small uk-card-body uk-margin-small" tabIndex="-1">
                 <header className="uk-comment-header uk-position-relative">
                     <div className="uk-grid-medium uk-flex-middle" uk-grid="true">
                         <div className="uk-width-auto">
-                            <img className="uk-comment-avatar uk-border-circle" src={profileUrl} width="40" height="40"/>
+                            <img className="uk-comment-avatar uk-border-circle" src={profileUrl} width="40" height="40" />
                         </div>
                         <div className="uk-width-expand">
                             <h4 className="uk-comment-title uk-margin-remove">{this.state.author}</h4>
-                            <p className="uk-comment-meta uk-margin-remove-top">{date}</p>
+                            <p className="uk-comment-meta uk-margin-remove-top" dangerouslySetInnerHTML={{ __html: date }}></p>
                         </div>
                     </div>
-                    <div className="uk-position-top-right uk-position-small uk-hidden-hover"><a className="uk-link-muted" onClick={this.onClick}>Reply</a></div>
+                    <div className="uk-position-top-right uk-position-small uk-hidden-hover"><a className="uk-link-muted" onClick={this.onClick}><span uk-icon="icon: reply"></span> Reply</a></div>
                 </header>
                 <div className="uk-comment-body" dangerouslySetInnerHTML={{ __html: this.state.body }}></div>
                 {this.state.open && this.props.commentDialog}

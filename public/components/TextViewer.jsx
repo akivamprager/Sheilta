@@ -3,14 +3,17 @@ class TextViewer extends React.Component {
         super(props);
         this.state = {
             textInfo: {
-                he: []
+                he: [],
+                en: []
             },
             questionInfo: [],
             kashyaInfo: [],
             chiddushInfo: [],
             referenceInfo: [],
             sections: {},
-            searchValue: ''
+            searchValue: '',
+            language: "he",
+            dir: "rtl"
             // , isAuthenticated : isAuthenticated()
 
         };
@@ -27,6 +30,11 @@ class TextViewer extends React.Component {
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
         this.loginModal = this.loginModal.bind(this);
+        this.helpModal = this.helpModal.bind(this);
+        this.showAlert = this.showAlert.bind(this);
+        this.fetchTopics = this.fetchTopics.bind(this);
+        this.setState = this.setState.bind(this);
+        this.toggleLanguage = this.toggleLanguage.bind(this);
     }
 
     fetchText() {
@@ -72,9 +80,27 @@ class TextViewer extends React.Component {
             "chiddushim": "chiddushInfo",
             "references": "referenceInfo"
         });
-        //const username = localStorage.getItem('name');
-        //this.setState({ username });
+        const name = localStorage.getItem('user');
+        const color = localStorage.getItem('profileColor');
+        if (!(name === null)) {
+            const username = name.replace(/\s+/g, '');
+            this.setState({ username, name, color });
+        }
     }
+    //async componentDidUpdate() {
+    // if (this.state.name != null) {
+    //     localStorage.setItem('user', this.state.name);
+    //     localStorage.setItem('profileColor', this.state.color);
+    // }
+    //this.fetchText();
+    /*this.fetchTopics({
+        "questions": "questionInfo",
+        "kashyas": "kashyaInfo",
+        "chiddushim": "chiddushInfo",
+        "references": "referenceInfo"
+    });*/
+    //}
+
     async showTopicsForLine(lineNum) {
         this.fetchTopicsForLine({
             "questions": "questionInfo",
@@ -84,18 +110,21 @@ class TextViewer extends React.Component {
         }, lineNum);
         document.getElementById("topics").scrollIntoView();
     }
+
     launchTopicDialog(lineNum) {
-        if (localStorage.getItem('user') === null || localStorage.getItem('user') === "null")
+        if (this.state.username === null || this.state.username === "null" || this.state.username == undefined)
             this.loginModal();
-        const topicDialog = (<TopicDialog lineNum={lineNum} onSubmitTopic={this.onSubmitTopic} />);
-        this.setState({
-            topicDialog: topicDialog,
-            selectedLineIndex: lineNum
-        });
+        else {
+            const topicDialog = (<TopicDialog lineNum={lineNum} onSubmitTopic={this.onSubmitTopic} />);
+            this.setState({
+                topicDialog: topicDialog,
+                selectedLineIndex: lineNum
+            });
+        }
     }
 
     async onSubmitTopic(lineNum, category, title, text) {
-        const response = await createTopic(textId, category, title, text, lineNum);
+        const response = await createTopic(textId, category, title, text, lineNum, this.state.username);
         this.showAlert({
             status: "success",
             message: "Your topic has been saved!"
@@ -104,16 +133,24 @@ class TextViewer extends React.Component {
             selectedLineIndex: -1,
             topicDialog: null
         });
+        this.fetchTopics({
+            "questions": "questionInfo",
+            "kashyas": "kashyaInfo",
+            "chiddushim": "chiddushInfo",
+            "references": "referenceInfo"
+        });
     }
 
     launchCommentDialog(topicId) {
-        if (localStorage.getItem('user') === null || localStorage.getItem('user') === "null")
+        if (this.state.username === null || this.state.username === "null" || this.state.username == undefined)
             this.loginModal();
-        const commentDialog = (<CommentDialog topicId={topicId} onSubmitComment={this.onSubmitComment} />);
-        this.setState({
-            commentDialog: commentDialog,
-            selectedTopicId: topicId
-        });
+        else {
+            const commentDialog = (<CommentDialog topicId={topicId} onSubmitComment={this.onSubmitComment} />);
+            this.setState({
+                commentDialog: commentDialog,
+                selectedTopicId: topicId
+            });
+        }
     }
 
     async upvote(postId) {
@@ -131,8 +168,9 @@ class TextViewer extends React.Component {
             message: "Post has been downvoted"
         });
     }
+
     async onSubmitComment(topicId, text) {
-        const response = await createComment(topicId, text);
+        const response = await createComment(topicId, text, this.state.username);
         this.showAlert({
             status: "success",
             message: "Your comment has been saved!"
@@ -140,6 +178,12 @@ class TextViewer extends React.Component {
         this.setState({
             selectedTopicId: -1,
             commentDialog: null
+        });
+        this.fetchTopics({
+            "questions": "questionInfo",
+            "kashyas": "kashyaInfo",
+            "chiddushim": "chiddushInfo",
+            "references": "referenceInfo"
         });
     }
 
@@ -162,24 +206,23 @@ class TextViewer extends React.Component {
         const commentDialog = (this.state.selectedTopicId === topic.id) ? this.state.commentDialog : null;
         const createdAt = convertDate(topic.created_at);
         return (
-            <dt>
+            <li>
                 <div key={topic.id} className="topic-container">
                     <div uk-tooltip="title: Click to expand thread; pos: top-left; delay: 300" onClick={this.toggleTopic.bind(this, topic)}>
-                        <span className="topic-title">{topic.title}</span>
-                        <dd>{createdAt}</dd>
+                        <dt> <span className="topic-title">{topic.title} </span></dt>
+                        <dd dangerouslySetInnerHTML={{ __html: createdAt }}></dd>
                     </div>
                     <div className={textClasses.join(" ")}>
                         <ul className="uk-comment-list uk-padding">
-
                             {
                                 topic.post_stream.posts.map((post) => (
-                                    <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.name} date={post.created_at} profileColor={localStorage.getItem("profileColor")} postId={post.id} commentDialog={commentDialog} upvote={this.upvote} downvote={this.downvote} launchCommentDialog={this.launchCommentDialog} />)
+                                    <Post key={post.id} body={post.cooked} topicId={post.topic_id} author={post.name} date={post.created_at} profileColor={this.state.color} postId={post.id} commentDialog={commentDialog} upvote={this.upvote} downvote={this.downvote} launchCommentDialog={this.launchCommentDialog} />)
                                 )
                             }
                         </ul>
                     </div>
                 </div>
-            </dt>
+            </li>
         );
     }
 
@@ -189,7 +232,11 @@ class TextViewer extends React.Component {
             case "success": style = "success"; break;
             case "error": style = "danger"; break;
         }
-        UIkit.notification(alertObj.message, style);
+        UIkit.notification({
+            message: alertObj.message,
+            status: style,
+            timeout: 1000
+        });
     }
 
     handleSearchChange(event) {
@@ -207,6 +254,13 @@ class TextViewer extends React.Component {
 
     gotoPrevious() {
         skipPage(this.props.textId, "previous");
+    }
+
+    toggleLanguage() {
+        if (this.state.language === "he")
+            this.setState({ language: "en", dir: "ltr" });
+        else if (this.state.language === "en")
+            this.setState({ language: "he", dir: "rtl" });
     }
 
     /*UserGreeting(props) {
@@ -230,14 +284,58 @@ class TextViewer extends React.Component {
     logout(){
         logout();
     }*/
-    loginModal() {
-        UIkit.modal.prompt('Enter your name:', '').then(function (user) {
-            localStorage.setItem("user", user);
-            localStorage.setItem("profileColor", Math.floor(Math.random() * 16777215).toString(16));
-            createNewUserWithoutEmail(user);
+
+    async loginModal() {
+        var response;
+        let showAlert = this.showAlert;
+        let state = this.state;
+        let fetchTopics = this.fetchTopics;
+        let setState = this.setState;
+
+        UIkit.modal.prompt('Enter your name:', '').then(async function (user) {
+            if (user != null) {
+                response = await createNewUserWithoutEmail(user);
+                if (response.data.success) {
+                    showAlert({
+                        status: "success",
+                        message: "Your name has been registered!"
+                    });
+                    localStorage.setItem("user", user);
+                    const color = Math.floor(Math.random() * 16777215).toString(16);
+                    localStorage.setItem("profileColor", color);
+                    const username = user.replace(/\s+/g, '');
+                    setState({ username, name: user, color });
+                }
+                else {
+                    showAlert({
+                        status: "error",
+                        message: "Error: " + response.data.message
+                    });
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("profileColor");
+                    setState({ username: null, name: null, color: null });
+                }
+                fetchTopics({
+                    "questions": "questionInfo",
+                    "kashyas": "kashyaInfo",
+                    "chiddushim": "chiddushInfo",
+                    "references": "referenceInfo"
+                });
+            }
+
+            //if (state.name != null) {
+            //    localStorage.setItem('user', state.name);
+            //    localStorage.setItem('profileColor', state.color);
+            //}
+            //refreshPage();
         });
     }
+    helpModal() {
+        UIkit.modal.dialog('<p>UIkit dialog!</p>');
+    }
+
     render() {
+        var profileStyle = `title: ${this.state.name}; pos: bottom`;
         return (
             // <ErrorBoundary>
             <div>
@@ -245,19 +343,22 @@ class TextViewer extends React.Component {
                     <div className="uk-navbar-left">
                         <a className="uk-navbar-item uk-logo" href="#">Sefaria</a>
                         <ul className="uk-navbar-nav">
-                            <li><a onClick={this.loginModal}>Login</a></li>
-                            <li><a href="#">Item</a></li>
                         </ul>
                     </div>
                     <div className="uk-navbar-right">
                         <div>
-                            <a className="uk-navbar-toggle" uk-search-icon="true" href="#"></a>
+                            <a className="uk-navbar-toggle" uk-tooltip="title: Search; delay: 300" uk-search-icon="true" href="#"></a>
                             <div className="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
                                 <form className="uk-search uk-search-navbar uk-width-1-1" onSubmit={this.onSubmitSearch}>
                                     <input value={this.state.searchValue} onChange={this.handleSearchChange} className="uk-search-input" type="search" placeholder="English source name..." autoFocus={true}></input>
                                 </form>
                             </div>
                         </div>
+                        <a className="uk-navbar-item" onClick={this.toggleLanguage} uk-tooltip="title: Language; delay: 300" uk-icon="world"></a>
+                        <a className="uk-navbar-item" onClick={this.helpModal} uk-tooltip="title: Help; delay: 300" uk-icon="icon: question"></a>
+                        {!this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip="title: Sign In; delay: 300"uk-icon="icon: users"></a>)}
+                        {this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip={profileStyle}><img className="uk-border-circle" src={`https://ui-avatars.com/api/?name=${this.state.name}`} width="32" height="32" alt="" /></a>)}
+
                     </div>
                 </nav>
                 <ul className="uk-pagination">
@@ -269,16 +370,23 @@ class TextViewer extends React.Component {
                     </li>
                 </ul>
                 <div>
-                    <div id="texts" className="uk-container uk-background-muted" dir="rtl">
-                        <h2 id="source-title">{this.state.textInfo.heRef}</h2>
-                        {this.state.textInfo &&
+                    <div id="texts" className="uk-container uk-background-muted" dir={this.state.dir}>
+                        <h2 id="source-title">{this.state.language === "he" && this.state.textInfo.heRef}{this.state.language === "en" && this.state.textInfo.ref}</h2>
+                        {this.state.language === "he" && this.state.textInfo &&
                             this.state.textInfo.he.map((line, index) => {
+                                const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
+                                return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
+                            })
+                        }
+                        {this.state.language === "en" && this.state.textInfo &&
+                            this.state.textInfo.text.map((line, index) => {
                                 const topicDialog = (this.state.selectedLineIndex === index) ? this.state.topicDialog : null;
                                 return (<TextLine key={index} line={line} lineNum={index} topicDialog={topicDialog} showTopicsForLine={this.showTopicsForLine} launchTopicDialog={this.launchTopicDialog} />);
                             })
                         }
                     </div>
                     <ReactTabs.Tabs id="topics">
+                        
                         <ReactTabs.TabList>
                             <ReactTabs.Tab>Questions</ReactTabs.Tab>
                             <ReactTabs.Tab>Kashyas</ReactTabs.Tab>
@@ -286,29 +394,52 @@ class TextViewer extends React.Component {
                             <ReactTabs.Tab>References</ReactTabs.Tab>
                         </ReactTabs.TabList>
                         <ReactTabs.TabPanel id="questions">
-                            <dl className="uk-description-list uk-description-list-divider">
+                            <ul className="uk-list uk-list-divider uk-list-striped">
                                 {this.state.questionInfo && this.state.questionInfo.map(topic => this.createTopicContainer(topic))}
-                            </dl>
+                            </ul>
+                            {!this.state.questionInfo && (
+                                <div className="uk-alert-warning" uk-alert="true">
+                                    <a className="uk-alert-close" uk-close="true"></a>
+                                    <p>It seems like there are no topics yet in this category.</p>
+                                </div>
+                            )}
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="kashyas">
-                            <dl className="uk-description-list uk-description-list-divider">
+                            <ul className="uk-list uk-list-divider uk-list-striped">
                                 {this.state.kashyaInfo && this.state.kashyaInfo.map(topic => this.createTopicContainer(topic))}
-                            </dl>
+                            </ul>
+                            {!this.state.kashyaInfo && (
+                                <div className="uk-alert-warning" uk-alert="true">
+                                    <a className="uk-alert-close" uk-close="true"></a>
+                                    <p>It seems like there are no topics yet in this category.</p>
+                                </div>
+                            )}
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="chiddushim">
-                            <dl className="uk-description-list uk-description-list-divider">
+                            <ul className="uk-list uk-list-divider uk-list-striped">
                                 {this.state.chiddushInfo && this.state.chiddushInfo.map(topic => this.createTopicContainer(topic))}
-                            </dl>
+                            </ul>
+                            {!this.state.chiddushInfo && (
+                                <div className="uk-alert-warning" uk-alert="true">
+                                    <a className="uk-alert-close" uk-close="true"></a>
+                                    <p>It seems like there are no topics yet in this category.</p>
+                                </div>
+                            )}
                         </ReactTabs.TabPanel>
                         <ReactTabs.TabPanel id="references">
-                            <dl className="uk-description-list uk-description-list-divider">
+                            <ul className="uk-list uk-list-divider uk-list-striped">
                                 {this.state.referenceInfo && this.state.referenceInfo.map(topic => this.createTopicContainer(topic))}
-                            </dl>
+                            </ul>
+                            {!this.state.referenceInfo && (
+                                <div className="uk-alert-warning" uk-alert="true">
+                                    <a className="uk-alert-close" uk-close="true"></a>
+                                    <p>It seems like there are no topics yet in this category.</p>
+                                </div>
+                            )}
                         </ReactTabs.TabPanel>
                     </ReactTabs.Tabs>
                 </div>
             </div>
-            //  </ErrorBoundary>
-        );
+        )
     }
 }

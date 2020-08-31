@@ -7,7 +7,7 @@ function createCommonHeaders() {
     return {
         "Content-Type": "application/json",
         "Api-Key": secrets.discourse_global_key,
-        "Api-Username": (typeof window !== 'undefined') ? localStorage.getItem("user").replace(/\s+/g, '') : "system",
+        "Api-Username": /*(typeof window !== 'undefined') ? localStorage.getItem("user").replace(/\s+/g, '') :*/ "system",
         "Accept": "application/json"
     };
 }
@@ -29,7 +29,7 @@ async function proxyRequest(req, res, axiosReq) {
         res.json((await axios(axiosReq)).data);
     } catch (e) {
         console.error(e);
-        console.error(e+"\n"+"Error Message: "+e.response.statusText);
+        console.error(e + "\n" + "Error Message: " + e.response.statusText);
         res.status(500).json({
             error: e + ""
         });

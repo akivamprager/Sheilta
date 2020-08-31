@@ -70,16 +70,16 @@ function skipPage(textId, direction) {
 function redirectToSource(textId) {
     location.href = location.origin + location.pathname + parseSourceToURLParam(textId);
 }
-function convertDate(timestamp){
+function convertDate(timestamp) {
     const readable = new Date(timestamp);
-    const m = readable.getMonth();  
-    const d = readable.getDate();  
+    const m = readable.getMonth();
+    const d = readable.getDate();
     const y = readable.getFullYear();
     const h = readable.getHours();
     const mi = readable.getMinutes();
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const mlong = months[m];
-    return `${mlong} ${d}, ${y} • ${h}:${mi}`;
+    return `${mlong} ${d}, ${y} <span uk-icon="icon: clock"></span> ${h}:${mi}`;
 }
 //---util
 function replaceAt(string, index, replace) {

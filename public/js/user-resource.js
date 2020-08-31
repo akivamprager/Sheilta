@@ -25,7 +25,7 @@ async function createNewUserWithoutEmail(name) {
     return await axios.post(`/api/v1/users`, user);
 }
 
-async function logOut(user){
+async function logOut(user) {
     return await axios.post(`/api/v1/users/${user}/logout`);
 }
 //util

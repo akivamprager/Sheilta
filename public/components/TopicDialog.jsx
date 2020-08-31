@@ -15,10 +15,10 @@ class TopicDialog extends React.Component {
     }
 
     render() {
-        const id=`new-topic-${this.props.lineNum}`;
-        const uktoggle=`target: #${id}; animation: uk-animation-fade`;
+        const id = `new-topic-${this.props.lineNum}`;
+        const uktoggle = `target: #${id}; animation: uk-animation-fade`;
         //<button type="button" uk-close="true" uk-toggle={uktoggle}></button>
- 
+
         return (
             <div className="uk-card-default uk-card-small uk-width-1-2@m" id={id}>
                 <div className="uk-card-header">

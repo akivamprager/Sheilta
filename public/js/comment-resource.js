@@ -1,5 +1,5 @@
 // all of the functions for POSTing posts to Discourse
-async function createTopic(textId, category, topicTitle, text, context) {
+async function createTopic(textId, category, topicTitle, text, context, user) {
     const tag = textId.replace(/[.]/g, "-") + "-" + context;
     let categoryCode = 0;
     if (category === "questions")
@@ -19,21 +19,21 @@ async function createTopic(textId, category, topicTitle, text, context) {
             tag
         ]
     }
-    return await axios.post(`/api/v1/topics`, topic);
+    return await axios.post(`/api/v1/topics/${user}`, topic);
 }
 
-async function createComment(topicId, text) {
+async function createComment(topicId, text, user) {
     const comment = {
         "topic_id": topicId,
         "raw": text
     }
-    return await axios.post(`/api/v1/topics/${topicId}/comments`, comment);
+    return await axios.post(`/api/v1/topics/${topicId}/comments/${user}`, comment);
 }
 
 async function votePost(postId, direction) {
     const vote = {
         "post_id": postId,
-        "direction" : direction
+        "direction": direction
     }
     return await axios.post(`/api/v1/posts/${postId}/vote`, vote);
 }

@@ -13,8 +13,8 @@ class CommentDialog extends React.Component {
     }
 
     render() {
-        const id=`new-comment-${this.props.topicId}`;
-        const uktoggle=`target: #${id}; animation: uk-animation-fade`;
+        const id = `new-comment-${this.props.topicId}`;
+        const uktoggle = `target: #${id}; animation: uk-animation-fade`;
         //<button type="button" uk-close="true" uk-toggle={uktoggle}></button>
         return (
             <div className="uk-container uk-card-default uk-card-small" id={id}>
