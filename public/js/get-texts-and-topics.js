@@ -67,7 +67,10 @@ function skipPage(textId, direction) {
     }
     redirectToSource(location);
 }
-function redirectToSource(textId, msg) {
+function redirectToSource(textId) {
+    location.href = location.origin + location.pathname + parseSourceToURLParam(textId);
+}
+function redirectToSourceMsg(textId, msg) {
     location.href = location.origin + location.pathname + parseSourceToURLParam(textId)+"&msg="+msg;
 }
 function convertDate(timestamp) {

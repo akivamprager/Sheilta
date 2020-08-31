@@ -46,15 +46,16 @@ class TextViewer extends React.Component {
                     if (textInfo.he != undefined)
                         this.setState({ textInfo: textInfo });
                     else
-                        redirectToSource("bereshit.1", "The source you have entered does not exist.");
+                    
+                        redirectToSourceMsg("bereshit.1", "The source you have entered does not exist.");
                 });
 
             } catch (error) {
                 this.showAlert({
-                    status: "error",
-                    message: "The source you have entered does not exist."
+                   status: "error",
+                   message: "The source you have entered does not exist."
                 });
-                setTimeout(redirectToSource("bereshit.1"), 3000);
+                setTimeout(redirectToSourceMsg("bereshit.1"), 3000);
             }
         }
     }
@@ -90,7 +91,7 @@ class TextViewer extends React.Component {
             const username = name.replace(/\s+/g, '');
             this.setState({ username, name, color });
         }
-        if (this.props.msg != undefined) {
+        if (this.props.msg) {
             this.showAlert({
                 status: "error",
                 message: "The source you have entered does not exist.",
