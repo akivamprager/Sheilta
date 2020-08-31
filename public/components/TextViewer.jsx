@@ -43,8 +43,12 @@ class TextViewer extends React.Component {
         } else {
             try {
                 getText(this.props.textId).then((textInfo) => {
-                    this.setState({ textInfo: textInfo });
+                    if (textInfo.he != undefined)
+                        this.setState({ textInfo: textInfo });
+                    else
+                        redirectToSource("bereshit.1", "The source you have entered does not exist.");
                 });
+
             } catch (error) {
                 this.showAlert({
                     status: "error",
@@ -86,6 +90,13 @@ class TextViewer extends React.Component {
             const username = name.replace(/\s+/g, '');
             this.setState({ username, name, color });
         }
+        if (this.props.msg != undefined) {
+            this.showAlert({
+                status: "error",
+                message: "The source you have entered does not exist.",
+                timeout: 3000
+            });
+        }
     }
     //async componentDidUpdate() {
     // if (this.state.name != null) {
@@ -125,10 +136,17 @@ class TextViewer extends React.Component {
 
     async onSubmitTopic(lineNum, category, title, text) {
         const response = await createTopic(textId, category, title, text, lineNum, this.state.username);
-        this.showAlert({
-            status: "success",
-            message: "Your topic has been saved!"
-        });
+        if (response.name)
+            this.showAlert({
+                status: "success",
+                message: "Your topic has been saved!"
+            });
+        else {
+            this.showAlert({
+                status: "error",
+                message: response.message
+            });
+        }
         this.setState({
             selectedLineIndex: -1,
             topicDialog: null
@@ -231,11 +249,12 @@ class TextViewer extends React.Component {
         switch (alertObj.status) {
             case "success": style = "success"; break;
             case "error": style = "danger"; break;
+            case "warning": style = "warning"; break;
         }
         UIkit.notification({
             message: alertObj.message,
             status: style,
-            timeout: 1000
+            timeout: (alertObj.timeout) ? alertObj.timeout : 1500
         });
     }
 
@@ -356,7 +375,7 @@ class TextViewer extends React.Component {
                         </div>
                         <a className="uk-navbar-item" onClick={this.toggleLanguage} uk-tooltip="title: Language; delay: 300" uk-icon="world"></a>
                         <a className="uk-navbar-item" onClick={this.helpModal} uk-tooltip="title: Help; delay: 300" uk-icon="icon: question"></a>
-                        {!this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip="title: Sign In; delay: 300"uk-icon="icon: users"></a>)}
+                        {!this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip="title: Sign In; delay: 300" uk-icon="icon: users"></a>)}
                         {this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip={profileStyle}><img className="uk-border-circle" src={`https://ui-avatars.com/api/?name=${this.state.name}`} width="32" height="32" alt="" /></a>)}
 
                     </div>
@@ -386,7 +405,7 @@ class TextViewer extends React.Component {
                         }
                     </div>
                     <ReactTabs.Tabs id="topics">
-                        
+
                         <ReactTabs.TabList>
                             <ReactTabs.Tab>Questions</ReactTabs.Tab>
                             <ReactTabs.Tab>Kashyas</ReactTabs.Tab>
@@ -398,7 +417,7 @@ class TextViewer extends React.Component {
                                 {this.state.questionInfo && this.state.questionInfo.map(topic => this.createTopicContainer(topic))}
                             </ul>
                             {!this.state.questionInfo && (
-                                <div className="uk-alert-warning" uk-alert="true">
+                                <div className="uk-alert-warning uk-margin-left uk-margin-right" uk-alert="true">
                                     <a className="uk-alert-close" uk-close="true"></a>
                                     <p>It seems like there are no topics yet in this category.</p>
                                 </div>

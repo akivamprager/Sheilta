@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!--<link rel="manifest" href="manifest.webmanifest">!-->
+  <!--<link rel="manifest" href="manifest.json">!-->
   <script type='text/javascript' src='axios/dist/axios.min.js'></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script src="babel-standalone/babel.min.js"></script>
+  <script crossorigin src="react/umd/react.production.min.js"></script>
+  <script crossorigin src="react-dom/umd/react-dom.production.min.js"></script>
   <script src="./js/get-texts-and-topics.js"></script>
   <script src="./js/comment-resource.js"></script>
   <script src="./js/user-resource.js"></script>
@@ -24,13 +24,13 @@
   <link rel="stylesheet" type="text/css" href="./css/TextViewer.css">
 
   <!-- UIkit CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/css/uikit.min.css" />
+  <link rel="stylesheet" href="uikit/dist/css/uikit.min.css" />
   <!-- UIkit JS -->
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.6/dist/js/uikit-icons.min.js"></script>
+  <script src="uikit/dist/js/uikit.min.js"></script>
+  <script src="uikit/dist/js/uikit-icons.min.js"></script>
 
-  <script src="https://unpkg.com/react-tabs/dist/react-tabs.production.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/react-tabs/style/react-tabs.css" />
+  <script src="react-tabs/dist/react-tabs.production.min.js"></script>
+  <link rel="stylesheet" href="react-tabs/style/react-tabs.css" />
 
 </head>
 
@@ -38,8 +38,9 @@
   <div id="root"></div>
   <script type="text/babel">
     const textId = new URLSearchParams(location.search).get("location");
+    const msg = new URLSearchParams(location.search).get("msg");
     ReactDOM.render(
-      <TextViewer textId={textId} />,
+      <TextViewer textId={textId} msg={msg}/>,
       document.getElementById('root')
     );
   </script>
