@@ -30,7 +30,7 @@ class TextViewer extends React.Component {
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
         this.loginModal = this.loginModal.bind(this);
-        //this.helpModal = this.helpModal.bind(this);
+        this.redirectToGithubPages = this.redirectToGithubPages.bind(this);
         this.showAlert = this.showAlert.bind(this);
         this.fetchTopics = this.fetchTopics.bind(this);
         this.setState = this.setState.bind(this);
@@ -46,14 +46,14 @@ class TextViewer extends React.Component {
                     if (textInfo.he != undefined)
                         this.setState({ textInfo: textInfo });
                     else
-                    
+
                         redirectToSourceMsg("bereshit.1", "The source you have entered does not exist.");
                 });
 
             } catch (error) {
                 this.showAlert({
-                   status: "error",
-                   message: "The source you have entered does not exist."
+                    status: "error",
+                    message: "The source you have entered does not exist."
                 });
                 setTimeout(redirectToSourceMsg("bereshit.1"), 3000);
             }
@@ -85,6 +85,11 @@ class TextViewer extends React.Component {
             "chiddushim": "chiddushInfo",
             "references": "referenceInfo"
         });
+        const isNotNewUser = localStorage.getItem('notNewUser');
+        if (isNotNewUser === null) {
+            this.redirectToGithubPages();
+        }
+
         const name = localStorage.getItem('user');
         const color = localStorage.getItem('profileColor');
         if (!(name === null)) {
@@ -350,9 +355,14 @@ class TextViewer extends React.Component {
             //refreshPage();
         });
     }
-   // helpModal() {
-   //     UIkit.modal.dialog('<p>UIkit dialog!</p>');
-   // }
+    redirectToGithubPages() {
+        setTimeout(this.showAlert({
+            status: "success",
+            message: "First time user? you will be redirected to the project's README. This will only happen once.",
+            timeout: 5000
+        }), 5000)
+        location.href = "https://akivamprager.github.io/Sheilta/";
+    }
 
     render() {
         var profileStyle = `title: ${this.state.name}; pos: bottom`;
