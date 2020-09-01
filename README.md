@@ -27,9 +27,8 @@ For example, let's say I'm learning Gemara Masechet (tractate) Beitza Daf 4a, an
 
 Another scenario: two Chavrutot are learning a chapter of Yechezkel, and they stumble upon a word they've never seen before. After doing some research, they find a book that gives the word an original interpretation, which seems to explain the meaning of the whole Pasuk (verse). Instead of keeping that knowledge to themselves, they can post a reference to the book, so other people learning that chapter can gain a better understanding.
 
-![](public\images\Docs\referenceExample.png)
-
-![](public\images\Docs\referenceExample2.png)
+<img src="public\images\Docs\referenceExample.png" />
+<img src="public\images\Docs\referenceExample2.png" />
 
 Of course, there can be many more use cases, and the usefulness of Sheilta will increase eventually, as its community will grow and there will be more content on the site.
 
