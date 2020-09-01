@@ -77,4 +77,4 @@ Sheilta is written in Node.JS and React, and uses Javascript libraries such as A
 
 I'd love to hear feedback from users who are trying the website and I'm always happy to accept new ideas on how to improve it or extend its functionality. Additionally, if you are a developer and would like to contribute to the project, that would be awesome :)
 
-Please email me at [akivaprager@gmail.com](akivaprager@gmail.com) or submit a pull request on Github. 
+Please email me at [akivaprager@gmail.com](mailto:akivaprager@gmail.com) or submit a pull request on Github. 
