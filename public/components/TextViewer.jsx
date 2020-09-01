@@ -360,7 +360,8 @@ class TextViewer extends React.Component {
             status: "success",
             message: "First time user? you will be redirected to the project's README. This will only happen once.",
             timeout: 5000
-        }), 5000)
+        }), 5000);
+        localStorage.setItem('notNewUser', true);
         location.href = "https://akivamprager.github.io/Sheilta/";
     }
 
