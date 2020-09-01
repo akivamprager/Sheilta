@@ -30,7 +30,7 @@ class TextViewer extends React.Component {
         this.upvote = this.upvote.bind(this);
         this.downvote = this.downvote.bind(this);
         this.loginModal = this.loginModal.bind(this);
-        this.helpModal = this.helpModal.bind(this);
+        //this.helpModal = this.helpModal.bind(this);
         this.showAlert = this.showAlert.bind(this);
         this.fetchTopics = this.fetchTopics.bind(this);
         this.setState = this.setState.bind(this);
@@ -350,9 +350,9 @@ class TextViewer extends React.Component {
             //refreshPage();
         });
     }
-    helpModal() {
-        UIkit.modal.dialog('<p>UIkit dialog!</p>');
-    }
+   // helpModal() {
+   //     UIkit.modal.dialog('<p>UIkit dialog!</p>');
+   // }
 
     render() {
         var profileStyle = `title: ${this.state.name}; pos: bottom`;
@@ -361,7 +361,7 @@ class TextViewer extends React.Component {
             <div>
                 <nav className="uk-navbar-container uk-margin uk-background-primary" uk-navbar="true">
                     <div className="uk-navbar-left">
-                        <a className="uk-navbar-item uk-logo" href="#">Sefaria</a>
+                        <a className="uk-navbar-item uk-logo" href="#"><img src="../images/resized-banner.png" width="151" height="69"></img></a>
                         <ul className="uk-navbar-nav">
                         </ul>
                     </div>
@@ -375,7 +375,7 @@ class TextViewer extends React.Component {
                             </div>
                         </div>
                         <a className="uk-navbar-item" onClick={this.toggleLanguage} uk-tooltip="title: Language; delay: 300" uk-icon="world"></a>
-                        <a className="uk-navbar-item" onClick={this.helpModal} uk-tooltip="title: Help; delay: 300" uk-icon="icon: question"></a>
+                        <a className="uk-navbar-item" href="github.com/akivamprager/sheilta" /*onClick={this.helpModal}*/ uk-tooltip="title: Open Readme; delay: 300" uk-icon="icon: question"></a>
                         {!this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip="title: Sign In; delay: 300" uk-icon="icon: users"></a>)}
                         {this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip={profileStyle}><img className="uk-border-circle" src={`https://ui-avatars.com/api/?name=${this.state.name}`} width="32" height="32" alt="" /></a>)}
 

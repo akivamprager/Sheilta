@@ -2,11 +2,14 @@
 
 ##### A collaborative Torah learning platform
 
-<img src="public\images\logo-banner2.png" style="zoom:15%;" />
+<img src="C:\Users\gilad\Documents\sefaria-interactive-simple\public\images\logo-banner2.png" style="zoom:15%;" />
 
 Sheilta ([sheilta.ml](sheilta.ml)) is a new website with the aim of bringing the benefits of learning in a Beit Midrash to a virtual environment.
 
-[TOC]
+###### Pages that already have content for purpose of the demo:
+
+- https://sheilta.ml/?location=ezekiel.5
+- https://sheilta.ml/?location=Shabbat.73b
 
 ## Background
 
@@ -28,9 +31,9 @@ For example, let's say I'm learning Gemara Masechet (tractate) Beitza Daf 4a, an
 
 Another scenario: two Chavrutot are learning a chapter of Yechezkel, and they stumble upon a word they've never seen before. After doing some research, they find a book that gives the word an original interpretation, which seems to explain the meaning of the whole Pasuk (verse). Instead of keeping that knowledge to themselves, they can post a reference to the book, so other people learning that chapter can gain a better understanding.
 
-![](public\images\Docs\referenceExample.png)
+![](C:\Users\gilad\Documents\sefaria-interactive-simple\public\images\Docs\referenceExample.png)
 
-![](public\images\Docs\referenceExample2.png)
+![](C:\Users\gilad\Documents\sefaria-interactive-simple\public\images\Docs\referenceExample2.png)
 
 Of course, there can be many more use cases, and the usefulness of Sheilta will increase eventually, as its community will grow and there will be more content on the site.
 
@@ -38,7 +41,7 @@ Of course, there can be many more use cases, and the usefulness of Sheilta will 
 
 Clicking https://sheilta.ml will open Bereshit (Genesis) chapter 1 by default. In order to open a different text, click on the search icon in the navbar, and enter the source's reference (as of now, only English works. But later on Hebrew will also work. Additionally, the only types of references guaranteed to work at this point are Bible and Talmud Bavli.) with a space between the source name and the chapter or page - for example: "Shoftim 23", or "Bava Kama 103b". Click enter, and that will bring you to the appropriate page. 
 
-The webpage is split into two sections: the Torah text on the top, and the user input on the bottom, split into tabs based on the matching category. The available categories are questions, Kashyas, references, and Chiddushim.
+The webpage is split into two sections: the Torah text on the top, and the user input on the bottom, split into tabs based on the matching category.
 
 Clicking on the globe icon in the navbar will toggle the language of the text (if the text is available in English). 
 
@@ -49,13 +52,6 @@ Clicking on any post title in the bottom section will reveal the complete thread
 In order to compose a new post or a reply, you will be prompted to enter your name, so that the post can be identified. 
 
 This is the functionality that's currently available, but of course, I'm constantly working on extending it and making the whole experience more user friendly. 
-
-#### Pages that already have content for purpose of the demo:
-
-- יחזקאל פרק ה - https://sheilta.ml/?location=Ezekiel.5
-- בבלי שבת קכג עמוד א - https://sheilta.ml/?location=Shabbat.123a
-
-**Note**: There's a temporary issue with sending too many requests to the server at once, which leads to some posts not to be sent. If that happens, just wait a minute or two. To be fixed in the future...
 
 ## Technology behind the site
 
