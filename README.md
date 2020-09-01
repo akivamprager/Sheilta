@@ -5,6 +5,7 @@
 <img src="public\images\logo-banner2.png" style="zoom:15%;" />
 
 Sheilta ([https://sheilta.ml](https://sheilta.ml)) is a new website with the aim of bringing the benefits of learning in a Beit Midrash to a virtual environment.
+
 **👉👉Please read this documentation before using the website**
 
 ## Background
