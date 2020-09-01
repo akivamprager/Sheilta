@@ -10,7 +10,7 @@ Sheilta ([https://sheilta.ml](https://sheilta.ml)) is a new website with the aim
 
 ## Background
 
-In the past couple of years, I've studied Torah in a Hesder Yeshiva (Maale Adumim), which is an institute that has a Beit Midrash with about two hundred students learning at any given time. It's very impressive, yet I haven't fully realized how fortunate I am to be learning in this atmosphere until March of this year when due to the COVID-19 epidemic, our Yeshiva closed down temporarily for a few months. 
+In the past year, I've studied Torah in a Hesder Yeshiva (Maale Adumim), which is an institute that has a Beit Midrash with about two hundred students learning at any given time. It's very impressive, yet I haven't fully realized how fortunate I am to be learning in this atmosphere until March of this year when due to the COVID-19 epidemic, our Yeshiva closed down temporarily for a few months. 
 
 During the following months, we continued to learn regularly, over Zoom, or on the phone. However, my general feeling was that something was missing, and our learning wasn't as productive and enjoyable as before. The lack of a Beit Midrash meant that if my Chavruta and I had difficulty understanding a Gemara or a Parshan, we weren't able to ask other students for help, as we used to. Also, if we had a Chiddush (insight) or Kashya (challenging question) on the Sugya (Talmudic paragraph) we didn't have a way to share it with the rest of the students to get feedback. 
 
