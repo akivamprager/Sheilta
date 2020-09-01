@@ -6,7 +6,6 @@
 
 Sheilta ([sheilta.ml](sheilta.ml)) is a new website with the aim of bringing the benefits of learning in a Beit Midrash to a virtual environment.
 
-[TOC]
 
 ## Background
 

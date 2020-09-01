@@ -375,7 +375,7 @@ class TextViewer extends React.Component {
                             </div>
                         </div>
                         <a className="uk-navbar-item" onClick={this.toggleLanguage} uk-tooltip="title: Language; delay: 300" uk-icon="world"></a>
-                        <a className="uk-navbar-item" href="github.com/akivamprager/sheilta" /*onClick={this.helpModal}*/ uk-tooltip="title: Open Readme; delay: 300" uk-icon="icon: question"></a>
+                        <a className="uk-navbar-item" href="https://github.com/akivamprager/sheilta" /*onClick={this.helpModal}*/ uk-tooltip="title: Open Readme; delay: 300" uk-icon="icon: question"></a>
                         {!this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip="title: Sign In; delay: 300" uk-icon="icon: users"></a>)}
                         {this.state.username && (<a className="uk-navbar-item uk-margin-small-right" onClick={this.loginModal} uk-tooltip={profileStyle}><img className="uk-border-circle" src={`https://ui-avatars.com/api/?name=${this.state.name}`} width="32" height="32" alt="" /></a>)}
 
