@@ -35,7 +35,7 @@ Of course, there can be many more use cases, and the usefulness of Sheilta will 
 
 ## Functionality
 
-Clicking https://sheilta.ml will open Bereshit (Genesis) chapter 1 by default. In order to open a different text, click on the search icon in the navbar, and enter the source's reference (as of now, only English works. But later on Hebrew will also work. Additionally, the only types of references guaranteed to work at this point are Bible and Talmud Bavli.) with a space between the source name and the chapter or page - for example: "Shoftim 23", or "Bava Kama 103b". Click enter, and that will bring you to the appropriate page. 
+Clicking [https://sheilta.ml](https://sheilta.ml) will open Bereshit (Genesis) chapter 1 by default. In order to open a different text, click on the search icon in the navbar, and enter the source's reference (as of now, only English works. But later on Hebrew will also work. Additionally, the only types of references guaranteed to work at this point are Bible and Talmud Bavli.) with a space between the source name and the chapter or page - for example: "Shoftim 23", or "Bava Kama 103b". Click enter, and that will bring you to the appropriate page. 
 
 The webpage is split into two sections: the Torah text on the top, and the user input on the bottom, split into tabs based on the matching category. The available categories are questions, Kashyas, references, and Chiddushim.
 
@@ -50,9 +50,9 @@ In order to compose a new post or a reply, you will be prompted to enter your na
 This is the functionality that's currently available, but of course, I'm constantly working on extending it and making the whole experience more user friendly. 
 
 #### Pages that already have content for purpose of the demo:
-- בראשית פרק א - https://sheilta.ml/?location=Bereshit.1
-- יחזקאל פרק ה - https://sheilta.ml/?location=Ezekiel.5
-- בבלי שבת קכג עמוד א - https://sheilta.ml/?location=Shabbat.123a
+- בראשית פרק א - [https://sheilta.ml/?location=Bereshit.1](https://sheilta.ml/?location=Bereshit.1)
+- יחזקאל פרק ה - [https://sheilta.ml/?location=Ezekiel.5](https://sheilta.ml/?location=Ezekiel.5)
+- בבלי שבת קכג עמוד א - [https://sheilta.ml/?location=Shabbat.123a](https://sheilta.ml/?location=Shabbat.123a)
 
 **Note**: There's a temporary issue with sending too many requests to the server at once, which leads to some posts not to be sent. If that happens, just wait a minute or two. To be fixed in the future...
 
@@ -77,4 +77,4 @@ Sheilta is written in Node.JS and React, and uses Javascript libraries such as A
 
 I'd love to hear feedback from users who are trying the website and I'm always happy to accept new ideas on how to improve it or extend its functionality. Additionally, if you are a developer and would like to contribute to the project, that would be awesome :)
 
-Please email me at akivaprager@gmail.com or submit a pull request on Github. 
+Please email me at [akivaprager@gmail.com](akivaprager@gmail.com) or submit a pull request on Github. 
